@@ -5,6 +5,7 @@ import { SessionProvider } from 'next-auth/react'
 import { Layout } from 'components/Layout'
 
 import 'styles/globals.scss'
+import 'components/Cmdk/styles.scss'
 import { ToastProvider } from 'contexts/Toast'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {

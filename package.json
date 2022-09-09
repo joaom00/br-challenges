@@ -19,6 +19,7 @@
     "@radix-ui/react-dropdown-menu": "^1.0.0",
     "@radix-ui/react-toast": "^1.0.0",
     "@radix-ui/react-tooltip": "^1.0.0",
+    "cmdk": "^0.1.20",
     "date-fns": "^2.29.1",
     "mongodb": "^4.8.1",
     "mongoose": "^6.5.0",

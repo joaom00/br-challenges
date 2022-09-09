@@ -15,6 +15,7 @@ import { formattedChallenge, isChallengeClosed } from 'utils/format'
 import { createClientPrismic, collectionSlugs } from 'service/prismic'
 
 import styles from './styles.module.scss'
+import { QuickLinks } from 'components/Cmdk'
 
 const ChallengePage: NextPage<Challenge> = challenge => {
   const { status } = useSession()
@@ -32,6 +33,8 @@ const ChallengePage: NextPage<Challenge> = challenge => {
         }
         image={challenge.image.url}
       />
+
+      <QuickLinks />
 
       <ChallengeHeader {...challenge} />
 

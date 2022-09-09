@@ -1,0 +1,237 @@
+@keyframes slideUp {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpInput {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDownInput {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.ql-root {
+  --margin: 20px;
+  --inputHeight: 48px;
+  --y: calc(var(--inputHeight) - var(--margin)) + var(--inputHeight);
+
+  position: fixed;
+  bottom: var(--margin);
+  left: var(--margin);
+  right: var(--margin);
+  z-index: 50;
+  transform: translateY(calc(100% - var(--y)));
+  will-change: transform;
+  transition: transform 0.5s cubic-bezier(0.53, 0.21, 0, 1);
+
+  &[data-open='true'] {
+    transform: translateY(0%);
+  }
+
+  @media (min-width: 1024px) {
+    --y: calc(var(--inputHeight) - var(--margin));
+    bottom: var(--margin);
+    right: var(--margin);
+    left: unset;
+  }
+
+  > .icon-button {
+    --size: 46px;
+    width: var(--size);
+    height: var(--size);
+    position: absolute;
+    top: calc(var(--size) * -1);
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
+    background-color: var(--background-light);
+    border: 1px solid var(--text-placeholder);
+    backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: none;
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+}
+
+[cmdk-root] {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 8px;
+  border-top-right-radius: 0;
+  background-color: var(--background-light);
+  border: 1px solid var(--text-placeholder);
+  backdrop-filter: saturate(180%) blur(10px);
+
+  @media (min-width: 1024px) {
+    border-top-right-radius: 8px;
+  max-width: 280px;
+  }
+
+}
+
+[cmdk-input-container] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--inputHeight);
+  padding: 0 16px;
+  border-bottom: 1px solid var(--text-placeholder);
+  position: relative;
+
+  > .input-shape {
+    cursor: pointer;
+    position: absolute;
+    inset: 0;
+    background-color: #191930;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    font-size: 0.875rem;
+    will-change: transform, opacity;
+    animation: slideDown 500ms ease-in-out both;
+
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: flex;
+    }
+  }
+
+  > svg {
+    animation: slideDownInput 500ms ease-in-out both;
+    flex-shrink: 0;
+  }
+
+  > kbd {
+    z-index: 2;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background-color: var(--background);
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    line-height: 1;
+    display: none;
+    user-select: none;
+    pointer-events: none;
+
+    @media (min-width: 1024px) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &[data-open='true'] {
+    > svg {
+      animation: slideUpInput 500ms ease-in-out both;
+    }
+
+    > .input-shape {
+      pointer-events: none;
+      animation: slideUp 500ms ease-in-out both;
+    }
+
+    [cmdk-input] {
+      pointer-events: initial;
+      animation: slideUpInput 500ms ease-in-out both;
+    }
+  }
+}
+
+[cmdk-input] {
+  font-size: 0.875rem;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  animation: slideDownInput 500ms ease-in-out both;
+  pointer-events: none;
+
+  &::placeholder {
+    color: var(--text-dark);
+  }
+}
+
+[cmdk-list] {
+  --maxHeight: 300px;
+  padding: 8px;
+  height: min(var(--maxHeight), calc(var(--cmdk-list-height) + 28px));
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  transition: 300ms cubic-bezier(0.53, 0.21, 0, 1);
+  transition-property: height;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+[cmdk-empty] {
+  font-size: 0.875rem;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+[cmdk-group-heading] {
+  text-transform: uppercase;
+  font-size: 0.625rem;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  letter-spacing: 1.5px;
+  color: var(--text);
+}
+
+[cmdk-item] {
+  cursor: pointer;
+  content-visibility: auto;
+  font-size: 0.875rem;
+  border-radius: 8px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  will-change: background, color;
+  transition: all 150ms ease;
+  transition-property: none;
+
+  &[aria-selected='true'] {
+    background-color: var(--background);
+  }
+}

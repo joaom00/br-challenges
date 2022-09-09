@@ -1,8 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
 import { FiSearch, FiLink2 } from 'react-icons/fi'
-import { Command } from 'cmdk'
+import { Command, useCommandState } from 'cmdk'
 
 const openNewTab = (url: string) => window.open(url, '_blank')
+
+const CommandEmpty = () => {
+  const search = useCommandState(state => state.search)
+  return (
+    <Command.Empty>
+      Nada encontrado para {'"'}
+      {search}
+      {'"'}.
+    </Command.Empty>
+  )
+}
 
 export const QuickLinks = () => {
   const [open, setOpen] = useState(false)
@@ -13,19 +24,21 @@ export const QuickLinks = () => {
     setOpen(true)
     inputRef.current?.focus()
   }
+  const onToggle = () =>
+    setOpen(currentOpen => {
+      if (currentOpen === false) {
+        inputRef.current?.focus()
+      } else {
+        inputRef.current?.blur()
+      }
+      return !currentOpen
+    })
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === '>' && event.shiftKey) {
         event.preventDefault()
-        setOpen(currentOpen => {
-          if (currentOpen === false) {
-            inputRef.current?.focus()
-          } else {
-            inputRef.current?.blur()
-          }
-          return !currentOpen
-        })
+        onToggle()
       }
     }
 
@@ -48,6 +61,9 @@ export const QuickLinks = () => {
 
   return (
     <div className="ql-root" data-open={open} ref={qlRootRef}>
+      <div className="icon-button" onClick={onToggle}>
+        <FiLink2 size={20} />
+      </div>
       <Command>
         <div cmdk-input-container="" data-open={open}>
           <div className="input-shape" onClick={onOpen}>
@@ -60,8 +76,7 @@ export const QuickLinks = () => {
           <kbd>{'>'}</kbd>
         </div>
         <Command.List>
-          <Command.Empty>Nada encontrado.</Command.Empty>
-
+          <CommandEmpty />
           <Command.Group heading="Geral">
             <Command.Item
               onSelect={() =>
@@ -72,7 +87,7 @@ export const QuickLinks = () => {
             >
               Repositório template
             </Command.Item>
-            <Command.Item>Baixar assets</Command.Item>
+            <Command.Item>Assets</Command.Item>
           </Command.Group>
 
           <Command.Group heading="Nível fácil">
